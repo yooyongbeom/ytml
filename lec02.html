@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>yb javascript ES6</title>
+	<script>
+        // 템플릿문자열
+        var fn_templateStr = () => {
+            var string1 = '안녕하세요';
+            var string2 = '반갑습니다.';
+            var greeting = `${string1} ${string2}`;
+            var product = { name: "도서", price: "420원" };
+            var message = `제품 ${product.name}의 가격은 ${product.price} 입니다.`;
+            var multiLine = `문자열1
+            문자열2`;
+            var value1 = 1;
+            var value2 = 2;
+            var booValue = false;
+            var operator1 = `곱셈값은 ${value1 * value2} 입니다.`;
+            var operator2 = `${booValue ? "참" : "거짓"}입니다.`;
+
+            console.log(string1);
+            console.log(string2);
+            console.log(greeting);
+            console.log(message);
+            console.log(multiLine);
+            console.log(operator1);
+            console.log(operator2);
+
+            var cart = {name: "도서", price: 1500}
+            //var getTot = function (cart) {
+                 //return cart.price + '원';
+            //};
+            var getTot = (cart) => {
+                return cart.price + '원';
+            };
+            // var myCart = "장바구니에 " + cart.name + "가 있습니다. 총 금액은 " + getTot(cart) + " 입니다.";
+            var myCart = `장바구니에 ${cart.name}가 있습니다. 총 금액은 ${getTot(cart)} 입니다.`;
+            console.log(myCart);
+        };
+
+        var fn_spreadOperator = () => {
+            // 배열
+            var array1 = ['one', 'two'];
+            var array2 = ['three', 'four'];
+            var combined = [...array1, ...array2];
+            console.log(combined);
+            const [ one, two, three = 'empty', ...others ] = array1;
+            // one = 'one', two = 'two', three = 'empty', others = []
+
+            // 객체
+            var objOne = { one:1, two: 2, other: 0};
+            var objTwo = { three:3, four: 4, other: -1};
+
+            var combined2 = {
+                ...objOne
+                ,...objTwo
+            };
+            console.log(combined2);
+            combined2 = {
+                ...objTwo
+                ,...objOne
+                
+            };
+            console.log(combined2);
+
+            var { other, ...others12 } = combined2;
+            console.log(others12);
+            console.log(other);
+
+            var arr22 = [ 1, 2, 3 ];
+            const [first, second, ...arr23] = arr22;
+            console.log(first);
+            console.log(second);
+            console.log(arr22);
+            console.log(arr23);
+        };
+        
+	</script>
+  </head>
+  <body>
+      <input type="button" value="템플릿문자열" onclick="fn_templateStr();" />
+      <input type="button" value="전개연산자" onclick="fn_spreadOperator();" />
+  </body>
+</html>

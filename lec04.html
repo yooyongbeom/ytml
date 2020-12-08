@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>yb javascript ES6</title>
+	<script>
+        // 디바운스
+        var fn_asyncProc = () => {
+            work1(function (msg1) {
+                console.log("done after 100ms:" + msg1);
+                work2(function (msg2) {
+                    console.log("done after 300ms:" + msg2);
+                    work3(function (msg3) {
+                        console.log("done after 600ms:" + msg3);
+                    });
+                });
+            });
+            urgentWork();
+        };
+
+	</script>
+  </head>
+  <body>
+      <input type="button" value="디바운스" onclick="fn_debounce();" />
+  </body>
+</html>

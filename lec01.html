@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>yb javascript</title>
+	<script>
+        // arguments 사용예
+        // 함수내부에서 인자는 Arguments 객체가 생성되고 지역변수로 arguments가 초기화된다.
+		// var factorial = function(x) {
+        //     if (x < 2)
+        //         return 1;
+        //     else
+        //         return x * arguments.callee(x - 1);
+        // }
+
+        // var check = function (a, b) {
+        //     alert(arguments.length);
+        //     alert(arguments[0] * arguments[1]);
+        // }
+
+        // var y  = factorial(5);
+        // alert(y);
+        // check(2, 7);
+
+        var fn_Validate = function(type) {
+            switch(type)
+            {
+                case "01":          // 세 수 곱셈
+                    var x = document.getElementById("txt_mul1").value;
+                    var y = document.getElementById("txt_mul2").value;
+                    var z = document.getElementById("txt_mul3").value;
+                    fn_mul( y, z);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        var fn_mul = function (x, y, z) {
+            fn_argLenCheck(arguments);
+            return x * y * z;
+        }
+
+        var fn_argLenCheck = function (args) {
+            var realLength = args.length;
+            var argLength = args.callee.length;
+            if (realLength != argLength) {
+                throw new Error("인자의 갯수가 잘못되었음, 올바른갯수 : " + argLength + " 실제 갯수 : " + realLength);
+            }
+        }
+
+        var fn_arrayCheck = function() {
+            var a = [1, true, "abc"];
+            var b = [a[0], a[0] * 2];
+            alert(b[1]);
+        }
+
+        // 배열 필터
+        var fn_arrayFilter = function() {
+            var data = [
+                {name : "yyb", age : 38, gender:"male"}
+                ,{name : "ssh", age : 39, gender:"male"}
+                ,{name : "shk", age : 34, gender:"female"}
+            ];
+            var selPerson = data.filter(function(x) {return x.age <= 38});
+            alert(selPerson[0].name);
+            alert(selPerson[1].name);
+        }
+
+        var fn_arrayJoin = function() {
+            var a = new Array(1, 2, 3, "babo");
+            alert(a.join());
+        }
+
+        var fn_arraySort = function() {
+            var a = new Array(2, 44, 333, 1);
+
+            alert(a.sort());            // 알파벳 순서
+            alert(a.sort(function (a, b) { return a - b; }));
+        }
+        var fn_arraytoStr = function() {
+            // join과 동일
+            alert(new Array(1, 2, 3, "babo").toString());
+            alert(new Array(1, 2, 3, "babo").toLocaleString());
+        }
+
+        var fn_bool = function() {
+            alert(Infinity.toString());
+            var a = new Boolean(document.getElementById("txt_mul1").value).valueOf();
+            console.log(a);
+            if (a) {
+                console.log("있음");
+            }
+            else {
+                console.log("없음");
+            }
+        }
+
+        var fn_isNotEmpty = function() {
+            // return new Boolean(document.getElementById("txt_mul1").value);
+            
+        }
+
+        var fn_json = function() {
+            var target = {
+                age: 38,
+                name: "yyb",
+                address: "김포한강삼정그린코아",
+                gender: undefined,
+                birthday: null,
+                run: function(){
+
+                }
+            };
+
+            var addr = {
+                city: "gimpo",
+                country: "korea",
+                state: "yangkok",
+                etc: "",
+
+                // json으로 변환할 프로퍼티만 함수 기술
+                toJSON: function() {
+                    return {
+                        city:this.city,
+                        country:this.country
+                    };
+                }
+            };
+
+            var text = JSON.stringify(target);
+            console.log(text);
+            console.log(JSON.stringify(addr, ["city", "country"]));
+            var jsonObj = JSON.parse(text);
+            console.log(jsonObj);
+            jsonObj = JSON.parse(JSON.stringify(addr));
+            console.log(jsonObj);
+
+            // alert(Number.MIN_VALUE);
+        }
+
+        var fn_proto = function() {
+            // 상속을 단계별(prototype chain) 처리
+            // User.prototype = new Emp();
+            // var user = new User();
+            // user.empInfo();
+            // alert(user instanceof User);
+            // alert(user instanceof Emp);
+
+            // Object.create로 직접 프로토타입 상속
+            // var user = Object.create(Emp.prototype);     // 인자 없음
+            var user = Object.create(Emp.prototype, {
+                empNm: {
+                    value: "babo"
+
+                   // 아래 속성에 따라 readonly
+                   ,configurable: true          // 해당 속성 삭제여부
+                   ,enumerable: true            // 루프를돌때 보이느냐
+                   ,writable: true              // 값을 쓸 수 있느냐
+                }
+            });
+            user.empNo = "03182";
+            user.empNm = "yybbbb";
+            user.empInfo();
+            console.dir(user);
+        }
+
+        var Emp = function() {
+            this.empNo = "03181";
+            this.empNm = "yyb";
+            this.deptCd = "58585";
+            this.deptNm = "선도부";
+            
+        }
+
+        Emp.prototype = {
+            empInfo : function () {
+                alert("(" + this.empNo + ") " + this.empNm);
+            }
+        }
+
+        var User = function() {
+            this.userNm = "Guest";
+            this.userNo = "00000";
+        }
+
+        var fn_regExpEXEC = function() {
+            var pattern = /\bJava\w*\b/g;
+            var text = "JavaScript is more fun than Java or JavaBeans!";
+            var result;
+            alert(pattern.source);
+            while((result = pattern.exec(text)) != null) {
+                alert("Matched '" + result[0] + "' at position' " + result.index + " next search begins at position " + pattern.lastIndex);
+            }
+        }
+
+        var fn_simpleHtmlStr = function() {
+            alert(("snvffgsdfgsdfg").anchor("http://www.naver.com"));
+            var abc = ("concat도 ").concat("a", "b", "c", String.fromCharCode(13), "abc");
+            alert(abc);
+        }
+
+        // drag and drop file 처리
+        window.onload = function() {
+            var drop = document.getElementById("drop");
+            drop.ondragover = function(e) {
+                // alert(e.timeStamp);
+                e.preventDefault();     // 이 부분이 없으면 ondrop 이벤트가 발생하지 않습니다.
+            };
+            drop.ondrop = function(e) {
+                e.preventDefault();     // 이 부분이 없으면 파일을 브라우저 실행해버립니다.
+                var data = e.dataTransfer;
+                // DataTransferItemList 객체 사용
+                if (data.items) {
+                    // DataTransferItem 객체 사용
+                    for (var i = 0; i < data.items.length; i++)
+                    {
+                        // 아이템 종류가 파일이면
+                        if (data.items[i].kind == "file") {
+                            // File API 사용
+                            var file = data.items[i].getAsFile();
+                            alert(file.name);
+                        }
+                    }
+                }
+                // File API 사용
+                else {
+                    for (var i = 0; i < data.files.length; i++)
+                    {
+                        alert(data.files[i].name);
+                    }
+                }
+            };
+        }
+        
+	</script>
+  </head>
+  <body>
+      <input type="text" id="txt_mul1" /><input type="text" id="txt_mul2" /><input type="text" id="txt_mul3" />
+      <input type="button" value="인자갯수 체크하고 곱셈" onclick="fn_Validate('01');" />
+      <input type="button" value="배열체크" onclick="fn_arrayCheck();" />
+      <input type="button" value="배열필터" onclick="fn_arrayFilter();" />
+      <input type="button" value="배열조인" onclick="fn_arrayJoin();" />
+      <input type="button" value="배열정렬" onclick="fn_arraySort();" />
+      <input type="button" value="배열toString()" onclick="fn_arraytoStr();" />
+      <input type="button" value="bool처리" onclick="fn_bool();" />
+      <input type="button" value="json" onclick="fn_json();" />
+      <input type="button" value="prototype 상속확인" onclick="fn_proto();" />
+      <input type="button" value="RegExp EXEC" onclick="fn_regExpEXEC();" />
+      <input type="button" value="간단한 html string" onclick="fn_simpleHtmlStr();" />
+      <div id="drop">여기에 파일을 드랍하세요</div>
+  </body>
+</html>

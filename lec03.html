@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>yb javascript ES6</title>
+	<script>
+        // 비동기 처리
+        var fn_asyncProc = () => {
+            work1(function (msg1) {
+                console.log("done after 100ms:" + msg1);
+                work2(function (msg2) {
+                    console.log("done after 300ms:" + msg2);
+                    work3(function (msg3) {
+                        console.log("done after 600ms:" + msg3);
+                    });
+                });
+            });
+            urgentWork();
+        };
+
+        var work1 = (onDone) => {
+            setTimeout(() => onDone("작업1 완료!"), 100);
+        };
+        var work2 = (onDone) => {
+            setTimeout(() => onDone("작업2 완료!"), 200);
+        };
+        var work3 = (onDone) => {
+            setTimeout(() => onDone("작업3 완료!"), 300);
+        };
+
+        var urgentWork = () => {
+            console.log("긴급 작업");
+        };
+        
+        // 실제 promise는 이렇지 않다.
+        // class Promise {
+        //     constructor(fn) {
+        //         const resolve = (...args) => {
+        //             if (typeof this.onDone === 'function') {
+        //                 this.onDone(...args);
+        //             }
+        //             if (typeof this.onComplete === 'function') {
+        //                 this.onComplete(...args);
+        //             }
+        //         }
+        //         const reject = (...args) => {
+        //             if (typeof this.onError === 'function') {
+        //                 this.onError(...args);
+        //             }
+        //             if (typeof this.onComplete === 'function') {
+        //                 this.onComplete(...args);
+        //             }
+        //         }
+
+        //         fn(resolve, reject);
+        //     }
+        //     then(onDone, onError) {
+        //         this.onDone = onDone;
+        //         this.onError = onError;
+        //         return this;
+        //     }
+        //     catch(onError) {
+        //         this.onError = onError;
+        //         return this;
+        //     }
+        //     finally(onComplete) {
+        //         this.onComplete = onComplete;
+        //         return this;
+        //     }
+        // }
+
+        // 비동기 promise
+        var fn_asyncPromProc = () => {
+            workk1().then(msg1 => {
+                console.log('done after 100ms: ' + msg1);
+                return workk2();
+            })
+            .then(msg2 => {
+                console.log('done after 200ms: ' + msg2);
+                return workk3();
+            })
+            .then(msg3 => {
+                console.log('done after 300ms: ' + msg3);
+            });
+
+            urgentWorkk();
+        };
+
+        const workk1 = () => {
+            // return new Promise((resolve, reject) => {
+            //     setTimeout(() => resolve('작업1 완료!'), 100);
+            // });
+            return new Promise(function (resolve, reject) {
+                setTimeout(resolve('작업1 완료!'), 100);
+            });
+        };
+        const workk2 = () => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => resolve('작업2 완료!'), 200);
+            });
+        };
+        const workk3 = () => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => resolve('작업3 완료!'), 300);
+            });
+        };
+        const urgentWorkk = () => {
+            console.log('긴급작업');
+        }
+
+	</script>
+  </head>
+  <body>
+      <input type="button" value="비동기처리" onclick="fn_asyncProc();" />
+      <input type="button" value="비동기처리Promise" onclick="fn_asyncPromProc();" />
+  </body>
+</html>
